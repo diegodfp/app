@@ -35,9 +35,8 @@ import lombok.Setter;
 public class Survey {
 
     @Id
-    @GeneratedValue ( strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-
 
     @Column(name = "name", nullable = false, length = 255)
     private String name;
@@ -45,15 +44,9 @@ public class Survey {
     @Column(name = "description", length = 255)
     private String description;
 
-    @Column(name = "componenthtml", length = 20)
-    private String componentHtml;
-
-    @Column(name = "componentreact", length = 20)
-    private String componentReact;
-
-
     @Embedded
-    private TimeCreateUpdate timeCreateUpdate;
+    @Builder.Default
+    private TimeCreateUpdate timeCreateUpdate = new TimeCreateUpdate(); // Añadimos @Builder.Default
 
     @ManyToMany
     @JoinTable(name = "survey_category", joinColumns = @JoinColumn(name = "survey_id"), inverseJoinColumns = @JoinColumn(name = "category_id"), uniqueConstraints = {
@@ -61,5 +54,5 @@ public class Survey {
     private List<CategoriesCatalog> categoriesCatalogs;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Chapter> chapters;    
+    private List<Chapter> chapters;
 }
