@@ -2,7 +2,7 @@ package com.appsurvey.app.chapter.domain.entities;
 
 import java.util.List;
 
-import com.appsurvey.app.categories_catalog.domain.entities.CategoriesCatalog;
+
 import com.appsurvey.app.common.domain.embeddable.TimeCreateUpdate;
 import com.appsurvey.app.questions.domain.entities.Questions;
 import com.appsurvey.app.survey.domain.entities.Survey;
@@ -52,11 +52,5 @@ public class Chapter {
 
     @Column(columnDefinition = "varchar(50)", nullable = false)
     private String chapterTitle;
-
-    @ManyToMany
-    @JoinTable(name = "question_chapters", joinColumns = @JoinColumn(name = "chapter_id"), inverseJoinColumns = @JoinColumn(name = "question_id"), uniqueConstraints = {
-            @UniqueConstraint(columnNames = { "chapter_id", "question_id" }) })
-    private List<Questions> questions;
-
-    
+ 
 }

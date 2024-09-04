@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.appsurvey.app.chapter.domain.entities.Chapter;
 import com.appsurvey.app.common.domain.embeddable.TimeCreateUpdate;
+import com.appsurvey.app.survey.domain.entities.Survey;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
@@ -15,7 +16,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +42,9 @@ public class Questions {
     @Embedded
     private TimeCreateUpdate timeCreateUpdate;
 
+    @ManyToOne
+    @JoinColumn(name = "chapterId", nullable = false)
+    private Chapter chapter;
 
     @Column(columnDefinition = "varchar(10)", nullable = false)
     private String questionNumber;
@@ -52,9 +58,6 @@ public class Questions {
     @Column(columnDefinition = "text")
     private String  questionText;
 
-     // Se coloca el JsonIgnoreProperties en las relaciones Muchos a Muchos! en donde no se hace la relacion
-    @JsonIgnoreProperties({"questions","handler","hibernateLazyInitializer"})
-    @ManyToMany(mappedBy = "questions") // El mapeo se hacer al nombre que le di a la lista
-    private List<Chapter> chapters;
+    
 
 }

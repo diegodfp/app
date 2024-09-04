@@ -2,7 +2,7 @@ package com.appsurvey.app.survey.domain.entities;
 
 import java.util.List;
 
-import com.appsurvey.app.categories_catalog.domain.entities.CategoriesCatalog;
+
 import com.appsurvey.app.chapter.domain.entities.Chapter;
 import com.appsurvey.app.common.domain.embeddable.TimeCreateUpdate;
 
@@ -48,11 +48,5 @@ public class Survey {
     @Builder.Default
     private TimeCreateUpdate timeCreateUpdate = new TimeCreateUpdate(); // Añadimos @Builder.Default
 
-    @ManyToMany
-    @JoinTable(name = "survey_category", joinColumns = @JoinColumn(name = "survey_id"), inverseJoinColumns = @JoinColumn(name = "category_id"), uniqueConstraints = {
-            @UniqueConstraint(columnNames = { "survey_id", "category_id" }) })
-    private List<CategoriesCatalog> categoriesCatalogs;
 
-    @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Chapter> chapters;
 }
