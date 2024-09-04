@@ -12,7 +12,6 @@ import com.appsurvey.app.user.domain.entities.User;
 import com.appsurvey.app.user.infrastructure.repositories.UserRepository;
 
 import lombok.RequiredArgsConstructor;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -23,28 +22,45 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDetails user=userRepository.findByUsername(request.getUsername()).orElseThrow();
-        String token=jwtService.getToken(user);
+        // Autenticar al usuario
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
+
+        // Obtener los detalles del usuario
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+
+        // Generar el token JWT
+        String token = jwtService.getToken(user);
+
+        // Devolver el token junto con el rol del usuario
         return AuthResponse.builder()
             .token(token)
+            .role(user.getRole().name())  // Aquí se agrega el rol del usuario a la respuesta
             .build();
-
     }
 
+    // Método para registrar al usuario (puede que necesites hacer lo mismo aquí)
     public AuthResponse register(RegisterRequest request) {
-        User user = User.builder()
-            .username(request.getUsername())
-            .password(passwordEncoder.encode( request.getPassword()))
-            .role(Role.ADMIN)
-            .build();
-
-        userRepository.save(user);
-
-        return AuthResponse.builder()
-            .token(jwtService.getToken(user))
-            .build();
-        
+       // Verificar que el rol esté presente en la solicitud
+       if (request.getRole() == null) {
+        throw new IllegalArgumentException("El rol es requerido");
     }
 
+    // Crear el usuario con el rol proporcionado en la solicitud
+    User user = User.builder()
+        .username(request.getUsername())
+        .password(passwordEncoder.encode(request.getPassword()))
+        .role(request.getRole())  // Usar el rol enviado en la solicitud
+        .build();
+
+    // Guardar el usuario en la base de datos
+    userRepository.save(user);
+
+    // Devolver el token junto con el rol del usuario
+    return AuthResponse.builder()
+        .token(jwtService.getToken(user))
+        .role(user.getRole().name())  // Asegúrate de que también se devuelva el rol aquí
+        .build();
+}
 }

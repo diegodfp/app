@@ -24,11 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/survey")
 @CrossOrigin(origins = {"http://localhost:4200"})
+@RequestMapping("/survey")
 public class SurveyController {
 
-     @Autowired 
+    @Autowired 
     private ISurvey servicio; 
     
 
@@ -63,7 +63,7 @@ public class SurveyController {
     } 
 
    
-
+    @CrossOrigin(origins = {"http://localhost:4200"})
     @PostMapping("/createSurvey")
     public  Survey createOne(@RequestBody Survey survey) {
         
