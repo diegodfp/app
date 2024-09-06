@@ -1,6 +1,5 @@
 package com.appsurvey.app.sub_questions.domain.entities;
 
-
 import java.util.List;
 
 import com.appsurvey.app.common.domain.embeddable.TimeCreateUpdate;
@@ -25,7 +24,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Entity
 @Table(name = "sub_questions")
 @Getter
@@ -47,5 +45,8 @@ public class SubQuestions {
     private Questions questions;
 
     @Column(columnDefinition = "text")
-    private String  subquestionText;
+    private String subquestionText;
+
+    @Column(columnDefinition = "varchar(20)", nullable = false)
+    private String responseType;
 }
